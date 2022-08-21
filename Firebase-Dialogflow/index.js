@@ -12,17 +12,45 @@ process.env.DEBUG = 'dialogflow:debug'; // enables lib debugging statements
 exports.dialogflowFirebaseFulfillment = functions.https.onRequest((request, response) => {
   const agent = new WebhookClient({ request, response });
 
-  function name_function(agent){
+  //INSERT DATA
+  function name_function_insert(agent){
     let name_variable = agent.parameters.NAME_VARIABLE_IN_AGENT;
     
     db.collection("name_db").add({
       name_variable_in_db: name_variable
     });
     
-    agent.add("Respuesta desde el Fulfillment");
+    agent.add("RESPONSE FULFILLMENT");
   }
+  
+  //SHOW DATA
+  function name_function_show(agent){
+    return db.collection("name_db").get().then(function(documents){
+      
+      if(documents === 0){
+        agent.add("NO EXIST DOCUMENTS");
+      }else{
+       	let response = "YOUR_MESSAGE";
+        
+        documents.forEach(function(document){
+         
+          const dataOutput = document.data();
+          response += "\n -> "+dataOutput.name_variable_in_db+" 👍";
+        
+        });//END forEach
+        agent.add(response);
+      }//END else
+      
+    }).catch(() => {
+      
+      agent.add("SERVER ERROR");
+      
+    });//END catch
+  }
+  
 
   let intentMap = new Map();
-  intentMap.set('name_intent', name_function);
+  intentMap.set('NAME_INTENT_INSERT', name_function_insert);
+  intentMap.set('NAME_INTENT_SHOW', name_function_show);
   agent.handleRequest(intentMap);
 });
