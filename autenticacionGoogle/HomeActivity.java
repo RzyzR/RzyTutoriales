@@ -12,11 +12,8 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class HomeActivity extends AppCompatActivity {
 
-    //Variables
-    //Componentes
-    Button mButtonCerrar;
+    Button mButtonCerrarSecion;
 
-    //Firebase
     FirebaseAuth mAuth;
 
     @Override
@@ -24,37 +21,35 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        mButtonCerrar = findViewById(R.id.btnCerrar);
-
         mAuth = FirebaseAuth.getInstance();
 
-        mButtonCerrar.setOnClickListener(new View.OnClickListener() {
+        mButtonCerrarSecion = findViewById(R.id.btnCerrarSecion);
+
+        mButtonCerrarSecion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mAuth.signOut();//Cerramos la sesión
-                irMain();
+                logout();
             }
         });
     }
 
-    //Verificamos el inicio de sesion
-
     @Override
     protected void onStart() {
         super.onStart();
-        FirebaseUser usuario = mAuth.getCurrentUser();
-        if(usuario == null){
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null){
             irMain();
         }
+    }
+
+    private void logout() {
+        mAuth.signOut();
+        irMain();
     }
 
     private void irMain() {
         Intent intent = new Intent(HomeActivity.this, MainActivity.class);
         startActivity(intent);
-        //con este metodo iniciamos y con
         finish();
-        //evitamos el regreso a esta actividad
     }
-
-    //FIN :){ A COMPILAR }
 }
