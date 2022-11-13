@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -25,17 +24,12 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class MainActivity extends AppCompatActivity {
 
-    //Componentes
-    TextView mTextViewRespuesta;
-
-    //Firebase
+    private static final int RC_SIGN_IN = 1;
+    GoogleSignInClient mGoogleSignInClient;
     FirebaseAuth mAuth;
 
-    //INICIO CON GOOGLE
-    private final int REQUEST_CODE_GOOGLE = 1;
-    GoogleSignInClient mGoogleSignInClient;
     SignInButton mSignInButtonGoogle;
-
+    TextView mTextViewRespuesta;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        mTextViewRespuesta = findViewById(R.id.textViewRespuesta);
-
         mSignInButtonGoogle = findViewById(R.id.btnGoogle);
-
-
-        // Configure Google Sign In
+        mTextViewRespuesta = findViewById(R.id.textViewRespuesta);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -57,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
 
         mSignInButtonGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,14 +56,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
-        FirebaseUser usuario = mAuth.getCurrentUser();
-        if(usuario != null){
-            irHome();
-        }
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        updateUI(currentUser);
+    }
+
+    private void signIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     @Override
@@ -82,11 +74,12 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == REQUEST_CODE_GOOGLE) {
+        if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
+                ;
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
@@ -94,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
 
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
@@ -105,24 +97,27 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             irHome();
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             mTextViewRespuesta.setText(task.getException().toString());
+                            updateUI(null);
                         }
                     }
                 });
     }
 
-    private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, REQUEST_CODE_GOOGLE);
+    private void updateUI(FirebaseUser user) {
+        user = mAuth.getCurrentUser();
+        if (user != null){
+            irHome();
+        }
     }
 
     private void irHome() {
         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
         startActivity(intent);
-        //con este metodo iniciamos y con
         finish();
-        //evitamos el regreso a esta actividad
     }
 }
