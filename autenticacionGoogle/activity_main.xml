@@ -15,17 +15,18 @@
         <com.google.android.gms.common.SignInButton
             android:id="@+id/btnGoogle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
 
         <TextView
             android:id="@+id/textViewRespuesta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:text="Respuesta"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
+            android:textSize="19dp"
+            android:layout_marginTop="50dp"
+            android:textColor="@color/black"/>
 
     </LinearLayout>
-    
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
