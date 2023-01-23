@@ -9,9 +9,9 @@ import java.sql.SQLException;
  * @author Rzy
  */
 public class Conectar {
-    public static final String URL = "jdbc:mysql://localhost:3306/escuela"; //"jdbc:mysql://localhost:3306/escuela?autoReconnet=true&useSSL=false"
-    public static final String USER = "root";
-    public static final String PASSWORD = "1234";
+    public static final String URL = "jdbc:mysql://localhost:3306/name_db"; //"jdbc:mysql://localhost:3306/name_db?autoReconnet=true&useSSL=false"
+    public static final String USER = "user";
+    public static final String PASSWORD = "password";
     
     Connection c = null;
     
