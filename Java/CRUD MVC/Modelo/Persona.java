@@ -1,0 +1,96 @@
+package CRUD_MVC.Modelo;
+
+import java.sql.Date;
+
+/**
+ *
+ * @author Rzy
+ */
+public class Persona {
+    private int idPersona;
+    private String clave;
+    private String nombre;
+    private String domicilio;
+    private String celular;
+    private String correo_electronico;
+    private Date fecha_nacimiento;
+    private String genero;
+
+    public Persona() {
+    }
+
+    public Persona(int idPersona, String clave, String nombre, String domicilio, String celular, String correo_electronico, Date fecha_nacimiento, String genero) {
+        this.idPersona = idPersona;
+        this.clave = clave;
+        this.nombre = nombre;
+        this.domicilio = domicilio;
+        this.celular = celular;
+        this.correo_electronico = correo_electronico;
+        this.fecha_nacimiento = fecha_nacimiento;
+        this.genero = genero;
+    }
+
+    public int getIdPersona() {
+        return idPersona;
+    }
+
+    public void setIdPersona(int idPersona) {
+        this.idPersona = idPersona;
+    }
+
+    public String getClave() {
+        return clave;
+    }
+
+    public void setClave(String clave) {
+        this.clave = clave;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDomicilio() {
+        return domicilio;
+    }
+
+    public void setDomicilio(String domicilio) {
+        this.domicilio = domicilio;
+    }
+
+    public String getCelular() {
+        return celular;
+    }
+
+    public void setCelular(String celular) {
+        this.celular = celular;
+    }
+
+    public String getCorreo_electronico() {
+        return correo_electronico;
+    }
+
+    public void setCorreo_electronico(String correo_electronico) {
+        this.correo_electronico = correo_electronico;
+    }
+
+    public Date getFecha_nacimiento() {
+        return fecha_nacimiento;
+    }
+
+    public void setFecha_nacimiento(Date fecha_nacimiento) {
+        this.fecha_nacimiento = fecha_nacimiento;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+}
