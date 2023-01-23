@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 /**
  *
- * @author Randy
+ * @author Rzy
  */
 public class ConsultasPersona extends Conectar {
 
